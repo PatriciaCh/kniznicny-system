@@ -1,0 +1,55 @@
+body {
+	padding: 10px;
+}
+
+h1 {
+	color: #708090;
+	font-size: 20px;
+}
+
+a {
+	text-decoration: none;
+	padding-right: 5px;
+	color: blue;
+}
+
+a:hover {
+	color: #3CB371;
+}
+
+ul, li {
+	text-transform: uppercase;
+	display: inline-block;
+	list-style-type: none;
+	padding-left: 0;
+	padding-right: 5px;
+	font-weight: bold;
+}
+
+input[type="submit"], input[type="button"] {
+    background-color: #3CB371;
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+input[type=text], input[type=password] {
+    padding: 8px 15px;
+    margin: 4px 0;
+    box-sizing: border-box;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #3CB371;
+    color: white;
+    border: 1px solid #708090;
+}
+
+#warning {
+	color: red;
+	font-weight: bold;
+}
