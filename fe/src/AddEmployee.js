@@ -4,17 +4,14 @@ import './App.css';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
-class Form extends Component {
+class AddEmployee extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			valueFirstname: "",
 			valueLastname: "",
-			valueAddress: "",
-			valueContact: "",
 			valueLogin: "",
 			valuePass: "",
-			valueConfPass: "",
 			warningMessage: "",
 			redirect: false,
 			redirectPlace: "/"
@@ -23,8 +20,6 @@ class Form extends Component {
 
 	validate=()=>{
 		const regexAlpha = /^[a-zA-ZľščťžýáíéúôňďĎŤĽÚŇŠČ]{3,15}$/i;
-		const regexAlphanumeric = /^[a-zA-ZľščťžýáíéúôňďĎŤĽÚŇŠČ0-9\-]+$/i; 
-		const regexNumeric = /^[0-9\b]+$/;
 		if (!regexAlpha.test(this.state.valueFirstname)) {
 			this.setState({
 				warningMessage: "First name length must be more than 3 and must contains only letters!"
@@ -37,27 +32,10 @@ class Form extends Component {
 			})
 			return false;
 		}
-		if (!regexAlphanumeric.test(this.state.valueAddress)) {
-			this.setState({
-				warningMessage: "Address must contains only alphanumerical characters!"
-			})
-			return false;
-		}
-		if (!regexNumeric.test(this.state.valueContact)) {
-			this.setState({
-				warningMessage: "Contact number must contains only digits!"
-			})
-			return false;
-		}
+		console.log(this.state.valuePass);
 		if (this.state.valuePass.length < 8) {
 			this.setState({
 				warningMessage: "Password must be longer than 8 characters!"
-			})
-			return false;
-		}
-		if (this.state.valuePass != this.state.valueConfPass) {
-			this.setState({
-				warningMessage: "Passwords do not match!"
 			})
 			return false;
 		}
@@ -73,15 +51,12 @@ class Form extends Component {
 					'Access-Control-Allow-Origin': '*'
 				},
 				method: 'POST',
-				url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/register_user',
+				url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/register_employee',
 				data: {
 					firstname: that.state.valueFirstname,
 					lastname: that.state.valueLastname,
-					address: that.state.valueAddress,
-					contact: that.state.valueContact,
 					login: that.state.valueLogin,
 					pass: that.state.valuePass,
-					confPass: that.state.valueConfPass
 				}
 			}).then((data) => {
 				switch (data.data){
@@ -91,16 +66,7 @@ class Form extends Component {
 					case "Bad lastname": 
 						this.setState({redirect: false});
 						break;
-					case "Bad address": 
-						this.setState({redirect: false});
-						break;
-					case "Bad contact": 
-						this.setState({redirect: false});
-						break;
 					case "Bad pass": 
-						this.setState({redirect: false});
-						break;
-					case "Bad pass and confPass": 
 						this.setState({redirect: false});
 						break;
 					case "Login exist": 
@@ -110,8 +76,7 @@ class Form extends Component {
 						this.setState({redirect: false});
 						break;
 					default:
-						this.state.redirectPlace = '/login';
-						this.setState({redirect: true});
+						this.props.viewEmployees();
 						
 				}
 				console.log(data.data);
@@ -131,7 +96,7 @@ class Form extends Component {
 	return (
 	<div>
 		<form onSubmit={this.handleSubmit}>
-			<h1>ADD READER</h1>
+			<h1>ADD EMPLOYEE</h1>
 			<label>
 				First name:<br/>
 		    	<input type="text" name="Firstname" onChange={this.handleChange} /><br/>
@@ -141,24 +106,12 @@ class Form extends Component {
 		    	<input type="text" name="Lastname" onChange={this.handleChange} /><br/>
 			</label>
 			<label>
-				Address:<br/>
-		    	<input type="text" name="Address" onChange={this.handleChange} /><br/>
-			</label>
-			<label>
-				Contact number:<br/>
-		    	<input type="text" name="Contact" onChange={this.handleChange} /><br/>
-			</label>
-			<label>
 				Login:<br/>
 		    	<input type="text" name="Login" onChange={this.handleChange} /><br/>
 			</label>
 			<label>
 		    	Password:<br/>
 		    	<input type="password" name="Pass" onChange={this.handleChange} /><br/>
-		 	</label>
-		 	<label>
-		    	Confirm password:<br/>
-		    	<input type="password" name="ConfPass" onChange={this.handleChange} /><br/>
 		 	</label>
 		 	<span id="warning">{this.state.warningMessage}</span><br/>
 			<input type="submit" value="Submit" />
@@ -168,4 +121,4 @@ class Form extends Component {
   }
 }
 
-export default Form;
+export default AddEmployee;

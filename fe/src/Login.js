@@ -14,6 +14,7 @@ class Login extends Component {
 			redirect: false,
 			redirectPlace: "/"
 		}
+		console.log("som tu");
 	}
 
 	handleSubmit=(e)=>{
@@ -28,11 +29,24 @@ class Login extends Component {
 			}
 		}).then((data) => {
 			if (data.data) {
-				localStorage.setItem("type", data.data); // admin / reader / employee
+				sessionStorage.setItem("type", data.data); // admin / reader / employee
 
 				sessionStorage.setItem('logged', true);
-				localStorage.setItem("login", this.state.valueLogin);
-				this.state.redirectPlace = '/books';
+				sessionStorage.setItem("login", this.state.valueLogin);
+				switch (data.data) {
+					case 1: 
+						this.state.redirectPlace = '/admin';
+						break;
+					case 2: 
+						this.state.redirectPlace = '/reader';
+						break;
+					case 3: 
+						this.state.redirectPlace = '/books';
+						break;
+					default:
+						this.state.redirectPlace = '/books';
+						break;
+				}
 				this.setState({redirect: true});
 			} else {
 				this.state.warningMessage = "Bad login or password!";
@@ -43,7 +57,7 @@ class Login extends Component {
 
 	logout=()=> {
 		sessionStorage.removeItem('logged');
-		localStorage.removeItem('login');
+		sessionStorage.removeItem('login');
 		this.state.redirectPlace = '/login';
 		this.setState({redirect: false});
 	}
@@ -54,11 +68,12 @@ class Login extends Component {
 	}
 
 	render() {
+		console.log(this.state.redirectPlace);
 		if (this.state.redirect) {
 			return <Redirect to={this.state.redirectPlace}/>
 		}
 		if (sessionStorage.getItem('logged')) {
-			return (<div> You are logged as {localStorage.getItem("login")}. <br/> 
+			return (<div> You are logged as <strong>{sessionStorage.getItem("login")}</strong>. <br/> 
 					<input type="button" value="Logout" onClick={this.logout}/></div>)
 		} else {
 			return (

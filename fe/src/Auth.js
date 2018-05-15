@@ -21,13 +21,13 @@ class Auth extends Component {
 		}
 	}
 
-	didComponentMount() {
+	componentDidMount() { // napojenie komponentu do DOM
 		this.isLogged();
 	}
 
 	render() {
-		if (this.state.logged) {
-			return (<UserHandler>{this.props.children}</UserHandler>);
+		if (sessionStorage.getItem('logged')) {
+			return (<div>{this.props.children}</div>);
 		}
 		return (<Redirect to="/login"/>);
   }

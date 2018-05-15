@@ -95,6 +95,7 @@ class Employee extends Component {
 		}
 	return (
 	<div>
+		Tu je EMPLOYEE
 		<form onSubmit={this.handleSubmit}>
 			<h1>REGISTRATION</h1>
 			<label>

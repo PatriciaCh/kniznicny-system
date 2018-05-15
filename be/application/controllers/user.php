@@ -14,7 +14,7 @@ class User extends CI_Controller {
 
 	public function register_user() {
 		$input_data = json_decode(trim(file_get_contents('php://input')), true);
-		if ($this->validate($input_data)) {
+		if ($this->validate_user($input_data)) {
 			$this->user_model->registration($input_data['firstname'],
 										   $input_data['lastname'],
 										   $input_data['address'],
@@ -24,6 +24,26 @@ class User extends CI_Controller {
 		} else {
 			return false;
 		}
+	}
+
+	public function register_employee() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		if ($this->validate_employee($input_data)) {
+			$this->user_model->add_employee($input_data['firstname'],
+										   $input_data['lastname'],
+										   $input_data['login'],
+									   	   $input_data['pass']);
+		} else {
+			return false;
+		}
+	}
+
+	public function add_book() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		$this->user_model->add_book($input_data['title'],
+									   $input_data['author'],
+									   $input_data['year'],
+								   	   $input_data['genre']);
 	}
 
 	public function login_user() {
@@ -36,7 +56,7 @@ class User extends CI_Controller {
 		}
 	}
 
-	public function validate($input_data) {
+	public function validate_user($input_data) {
 		if($this->user_model->login_in_db($input_data['login'])) { 
 			echo "Login exist";
 			return false;
@@ -67,7 +87,54 @@ class User extends CI_Controller {
 		}
 		echo "Registration OK";
 		return true;
+	}
 
+	public function validate_employee($input_data) {
+		if($this->user_model->login_in_db_emp($input_data['login'])) { 
+			echo "Login exist";
+			return false;
+		}
+		if (!ctype_alpha($input_data['firstname']) || strlen($input_data['firstname']) < 3) {
+			echo "Bad firstname";
+			return false;
+		}
+		if (!ctype_alpha($input_data['lastname']) || strlen($input_data['lastname']) < 3) {
+			echo "Bad lastname";
+			return false;
+		}
+		if (strlen($input_data['pass']) < 8) {
+			echo "Bad pass";
+			return false;
+		}
+		echo "Registration OK";
+		return true;
+	}
+
+	public function get_all_employees() {
+		echo json_encode($this->user_model->get_all_employees());
+	}
+
+	public function delete_employee() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		$this->user_model->delete_employee($input_data['id']);
+	}
+
+	public function get_all_readers() {
+		echo json_encode($this->user_model->get_all_readers());
+	}
+
+	public function delete_reader() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		$this->user_model->delete_reader($input_data['id']);
+	}
+
+	public function get_all_books() {
+		echo json_encode($this->user_model->get_all_books());
+	}
+
+	public function delete_book() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		$this->user_model->delete_book($input_data['id'],$input_data['title'],$input_data['author'],$input_data['year'],$input_data['count']);
 	}
 
 }
