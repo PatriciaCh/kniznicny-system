@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import AddBook from './AddBook';
+import SearchBook from './SearchBook';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
 class Book extends Component {
@@ -33,15 +34,23 @@ constructor(props) {
 				method: 'GET',
 				url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/get_all_books',
 			}).then((data) => {
+				let times=(bk)=>{
+					if (sessionStorage.getItem('type') == "3") {
+						return (null);
+					} 
+					return (<span className="delete" onClick={()=>{this.deleteBook(bk)}}>&times;</span>);
+				}
+				let checkbox = sessionStorage.getItem('type') == "3" ? (<td><input type="submit" value="Reserve"/></td>) : (null);
 				let mapa = data.data.map((bk)=>
-						(<tr>
-							<td>{bk.title}</td>
-							<td>{bk.author}</td>
-							<td>{bk.year}</td>
-							<td>{bk.genre}</td>
-							<td>{bk.count}</td>
-							<td><span className="delete" onClick={()=>{this.deleteBook(bk)}}>&times;</span></td>
-						</tr>
+						(	<tr>
+								{checkbox}
+								<td>{bk.title}</td>
+								<td>{bk.author}</td>
+								<td>{bk.year}</td>
+								<td>{bk.genre}</td>
+								<td>{bk.count}</td>
+								<td>{times(bk)}</td>
+							</tr>
 						)
 				);
 				this.setState({books: mapa});
@@ -53,13 +62,15 @@ constructor(props) {
 	}
 
 	render() {
-		let form = sessionStorage.getItem('type') == "3" ? (null) : (<div><AddBook viewBooks={this.viewBooks} /><hr/></div>) ;
+		let empty = sessionStorage.getItem('type') == "3" ? (<th></th>) : (null);
+		let form = sessionStorage.getItem('type') == "3" ? (<div><SearchBook/><hr/></div>) : (<div><AddBook viewBooks={this.viewBooks} /><hr/></div>) ;
 		return (
 		<div>
 			{form}
 		<h1>BOOKS</h1>
 			<table>
 				<tr>
+					{empty}
 					<th>Title</th>
 					<th>Author</th>
 					<th>Year</th>

@@ -83,11 +83,12 @@ class User_model extends CI_Model {
 	}
 
 	function get_all_employees(){
+		$admin = "admin";
+		$this->db->where(array('login !='=> $admin));
 		return $this->db->get('employees')->result_array();
 	}
 
 	function delete_employee($id){
-		// TO DO nezobrazovat admina
 		$data = array('id' => $id);
 		$this->db->delete('employees', $data);
 	}
