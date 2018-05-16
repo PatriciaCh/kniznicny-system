@@ -62,24 +62,27 @@ constructor(props) {
 	}
 
 	render() {
-		let empty = sessionStorage.getItem('type') == "3" ? (<th></th>) : (null);
-		let form = sessionStorage.getItem('type') == "3" ? (<div><SearchBook/><hr/></div>) : (<div><AddBook viewBooks={this.viewBooks} /><hr/></div>) ;
+		let form = sessionStorage.getItem('type') == "3" ? (<div><SearchBook/></div>) : (<div><AddBook viewBooks={this.viewBooks} /></div>) ;
+		let search = sessionStorage.getItem('type') == "3" ? (null) :
+															(<div>
+																<h1>BOOKS</h1>
+																<table>
+																	<tr>
+																		<th>Title</th>
+																		<th>Author</th>
+																		<th>Year</th>
+																		<th>Genre</th>
+																		<th>Count</th>
+																		<th></th>
+																	</tr>
+																	{this.state.books}
+																</table>
+															</div>);
+
 		return (
 		<div>
 			{form}
-		<h1>BOOKS</h1>
-			<table>
-				<tr>
-					{empty}
-					<th>Title</th>
-					<th>Author</th>
-					<th>Year</th>
-					<th>Genre</th>
-					<th>Count</th>
-					<th></th>
-				</tr>
-				{this.state.books}
-			</table>
+			{search}
 		</div>);
   }
 }

@@ -24,6 +24,7 @@ const defaultNav = function(children) {
 }
 
 const navSwitch = function(children) {
+	console.log(sessionStorage.getItem('type'));
 	switch(sessionStorage.getItem('type')) {
 		case "1":
 			return adminNav(children);
@@ -32,6 +33,7 @@ const navSwitch = function(children) {
 		case "3":
 			return readerNav(children);
 		default:
+			console.log("som v defaulte");
 			return defaultNav(children);
 	}
 }

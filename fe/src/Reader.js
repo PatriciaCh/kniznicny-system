@@ -51,7 +51,7 @@ class Reader extends Component {
 
 	render() {
 		return (<div>
-			<Form />
+			<Form viewReaders={this.viewReaders} />
 			<hr/>
 			<h1>READERS</h1>
 			<table>

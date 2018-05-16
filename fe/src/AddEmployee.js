@@ -77,6 +77,10 @@ class AddEmployee extends Component {
 						break;
 					default:
 						this.props.viewEmployees();
+						this.state.valueFirstname = "";
+						this.state.valueLastname = "";
+						this.state.valueLogin = "";
+						this.setState({valuePass: ""})
 						
 				}
 				console.log(data.data);
@@ -86,7 +90,7 @@ class AddEmployee extends Component {
 
 	handleChange=(e)=>{
 		let input =`value${e.target.name}`;
-		this.state[input]=e.target.value;
+		this.setState({[input]: e.target.value});
 	}
 
 	render() {
@@ -99,19 +103,19 @@ class AddEmployee extends Component {
 			<h1>ADD EMPLOYEE</h1>
 			<label>
 				First name:<br/>
-		    	<input type="text" name="Firstname" onChange={this.handleChange} /><br/>
+		    	<input type="text" name="Firstname" value={this.state.valueFirstname} onChange={this.handleChange} /><br/>
 			</label>
 			<label>
 				Last name:<br/>
-		    	<input type="text" name="Lastname" onChange={this.handleChange} /><br/>
+		    	<input type="text" name="Lastname" value={this.state.valueLastname} onChange={this.handleChange} /><br/>
 			</label>
 			<label>
 				Login:<br/>
-		    	<input type="text" name="Login" onChange={this.handleChange} /><br/>
+		    	<input type="text" name="Login" value={this.state.valueLogin} onChange={this.handleChange} /><br/>
 			</label>
 			<label>
 		    	Password:<br/>
-		    	<input type="password" name="Pass" onChange={this.handleChange} /><br/>
+		    	<input type="password" name="Pass" value={this.state.valuePass} onChange={this.handleChange} /><br/>
 		 	</label>
 		 	<span id="warning">{this.state.warningMessage}</span><br/>
 			<input type="submit" value="Submit" />

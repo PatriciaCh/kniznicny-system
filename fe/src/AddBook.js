@@ -33,12 +33,18 @@ class AddBook extends Component {
 				year: that.state.valueYear,
 				genre: that.state.valueGenre
 			}
-		})	
+		}).then((data) => {
+				this.props.viewBooks();
+				this.state.valueTitle = "";
+				this.state.valueAuthor = "";
+				this.state.valueYear = "";
+				this.setState({valueGenre: ""})
+			});
 	}
 
 	handleChange=(e)=>{
 		let input =`value${e.target.name}`;
-		this.state[input]=e.target.value;
+		this.setState({[input]: e.target.value});
 	}
 
 	render() {
@@ -48,19 +54,19 @@ class AddBook extends Component {
 			<h1>ADD BOOK</h1>
 			<label>
 				Title:<br/>
-		    	<input type="text" name="Title" onChange={this.handleChange} /><br/>
+		    	<input type="text" name="Title" value={this.state.valueTitle} onChange={this.handleChange} /><br/>
 			</label>
 			<label>
 				Author:<br/>
-		    	<input type="text" name="Author" onChange={this.handleChange} /><br/>
+		    	<input type="text" name="Author" value={this.state.valueAuthor} onChange={this.handleChange} /><br/>
 			</label>
 			<label>
 				Year:<br/>
-		    	<input type="text" name="Year" onChange={this.handleChange} /><br/>
+		    	<input type="text" name="Year" value={this.state.valueYear} onChange={this.handleChange} /><br/>
 			</label>
 			<label>
 		    	Genre:<br/>
-		    	<input type="text" name="Genre" onChange={this.handleChange} /><br/>
+		    	<input type="text" name="Genre" value={this.state.valueGenre} onChange={this.handleChange} /><br/>
 		 	</label>
 		 	<span id="warning">{this.state.warningMessage}</span><br/>
 			<input type="submit" value="Submit" />

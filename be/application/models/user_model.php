@@ -126,5 +126,13 @@ class User_model extends CI_Model {
 		return True;
 	}
 
+	function search_books($title, $author, $year, $genre) {
+		$this->db->like('title', $title);
+		$this->db->like('author', $author);
+		$this->db->like('year', $year);
+		$this->db->like('genre', $genre);
+		return $this->db->get('books')->result_array();
+	}
+
 
 }

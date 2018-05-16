@@ -14,11 +14,12 @@ class SearchBook extends Component {
 			valueGenre: "",
 			warningMessage: "",
 			redirect: false,
-			redirectPlace: "/"
+			redirectPlace: "/",
+			books: null
 		}
 	}
 
-	handleSubmit=(e)=>{
+	searchBooks=(e)=>{
 		e.preventDefault();
 		let that = this;
 		axios({
@@ -26,14 +27,28 @@ class SearchBook extends Component {
 				'Access-Control-Allow-Origin': '*'
 			},
 			method: 'POST',
-			url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/search_book',
+			url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/search_books',
 			data: {
 				title: that.state.valueTitle,
 				author: that.state.valueAuthor,
 				year: that.state.valueYear,
 				genre: that.state.valueGenre
 			}
-		})	
+		}).then((data) => {
+				let button = sessionStorage.getItem('type') == "3" ? (<td><input type="submit" value="Reserve"/></td>) : (null);
+				let mapa = data.data.map((bk)=>
+						(	<tr>
+								{button}
+								<td>{bk.title}</td>
+								<td>{bk.author}</td>
+								<td>{bk.year}</td>
+								<td>{bk.genre}</td>
+								<td>{bk.count}</td>
+							</tr>
+						)
+				);
+				this.setState({books: mapa});
+			});
 	}
 
 	handleChange=(e)=>{
@@ -44,7 +59,7 @@ class SearchBook extends Component {
 	render() {
 	return (
 	<div>
-		<form onSubmit={this.handleSubmit}>
+		<form onSubmit={this.searchBooks}>
 			<h1>SEARCH BOOK</h1>
 			<label>
 				Title:<br/>
@@ -65,6 +80,22 @@ class SearchBook extends Component {
 		 	<span id="warning">{this.state.warningMessage}</span><br/>
 			<input type="submit" value="Search" />
 		</form>
+
+		<hr/>
+		<h1>FOUND BOOKS</h1>
+		<table>
+			<tr>
+				<th>Reserve</th>
+				<th>Title</th>
+				<th>Author</th>
+				<th>Year</th>
+				<th>Genre</th>
+				<th>Count</th>
+				<th></th>
+			</tr>
+			{this.state.books}
+		</table>
+
 	</div>
 	);
   }

@@ -58,8 +58,8 @@ class Login extends Component {
 	logout=()=> {
 		sessionStorage.removeItem('logged');
 		sessionStorage.removeItem('login');
-		this.state.redirectPlace = '/login';
-		this.setState({redirect: false});
+		sessionStorage.removeItem('type');
+		this.setState({redirect: true});
 	}
 
 	handleChange=(e)=>{

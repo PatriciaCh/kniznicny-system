@@ -137,4 +137,9 @@ class User extends CI_Controller {
 		$this->user_model->delete_book($input_data['id'],$input_data['title'],$input_data['author'],$input_data['year'],$input_data['count']);
 	}
 
+	public function search_books() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		echo json_encode($this->user_model->search_books($input_data['title'],$input_data['author'],$input_data['year'],$input_data['genre']));
+	}
+
 }
