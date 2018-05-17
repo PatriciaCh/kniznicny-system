@@ -19,7 +19,7 @@ class AddEmployee extends Component {
 	}
 
 	validate=()=>{
-		const regexAlpha = /^[a-zA-ZľščťžýáíéúôňďĎŤĽÚŇŠČ]{3,15}$/i;
+		const regexAlpha = /^[a-zA-Z]{3,15}$/i;
 		if (!regexAlpha.test(this.state.valueFirstname)) {
 			this.setState({
 				warningMessage: "First name length must be more than 3 and must contains only letters!"

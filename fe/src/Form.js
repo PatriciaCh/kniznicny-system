@@ -22,8 +22,8 @@ class Form extends Component {
 	}
 
 	validate=()=>{
-		const regexAlpha = /^[a-zA-ZľščťžýáíéúôňďĎŤĽÚŇŠČ]{3,15}$/i;
-		const regexAlphanumeric = /^[a-zA-ZľščťžýáíéúôňďĎŤĽÚŇŠČ0-9 \-]+$/i; 
+		const regexAlpha = /^[a-zA-Z]{3,15}$/i;
+		const regexAlphanumeric = /^[a-zA-Z0-9 \-]+$/i; 
 		const regexNumeric = /^[0-9\b]+$/;
 		if (!regexAlpha.test(this.state.valueFirstname)) {
 			this.setState({
@@ -120,7 +120,6 @@ class Form extends Component {
 						this.setState({valueConfPass: ""})
 						
 				}
-				console.log(data.data);
 			})
 		}
 	}

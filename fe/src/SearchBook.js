@@ -4,6 +4,27 @@ import './App.css';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Link, Redirect } from "react-router-dom";
 
+class Button extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isClick: false,
+		}
+	}
+
+	clicked() {
+		this.setState({isClick: true});
+	}
+
+	render() {
+		if (this.state.isClick) {
+			return (<button disabled={true} className="disabled">Reserve</button>)
+		} else {
+			return (<button disabled={false} onClick={()=>{this.clicked();this.props.addReservation(this.props.bk)}}>Reserve</button>)
+		}
+	}
+}
+
 class SearchBook extends Component {
 	constructor(props) {
 		super(props);
@@ -19,9 +40,19 @@ class SearchBook extends Component {
 		}
 	}
 
+	addReservation=(bk)=>{
+		axios({
+				method: 'POST',
+				url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/add_reservation',
+				data: {reader_id: sessionStorage.getItem('user_id'),
+					   book_id: bk.id,
+					   approved: false
+				}
+			});
+	}
+
 	searchBooks=(e)=>{
 		e.preventDefault();
-		let that = this;
 		axios({
 			header: {
 				'Access-Control-Allow-Origin': '*'
@@ -29,16 +60,16 @@ class SearchBook extends Component {
 			method: 'POST',
 			url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/search_books',
 			data: {
-				title: that.state.valueTitle,
-				author: that.state.valueAuthor,
-				year: that.state.valueYear,
-				genre: that.state.valueGenre
+				title: this.state.valueTitle,
+				author: this.state.valueAuthor,
+				year: this.state.valueYear,
+				genre: this.state.valueGenre
 			}
 		}).then((data) => {
-				let button = sessionStorage.getItem('type') == "3" ? (<td><input type="submit" value="Reserve"/></td>) : (null);
+				
 				let mapa = data.data.map((bk)=>
 						(	<tr>
-								{button}
+								<td><Button addReservation={this.addReservation} bk={bk}/></td>
 								<td>{bk.title}</td>
 								<td>{bk.author}</td>
 								<td>{bk.year}</td>
@@ -48,7 +79,7 @@ class SearchBook extends Component {
 						)
 				);
 				this.setState({books: mapa});
-			});
+			}); 
 	}
 
 	handleChange=(e)=>{
@@ -83,6 +114,7 @@ class SearchBook extends Component {
 
 		<hr/>
 		<h1>FOUND BOOKS</h1>
+
 		<table>
 			<tr>
 				<th>Reserve</th>

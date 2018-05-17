@@ -48,9 +48,11 @@ class User extends CI_Controller {
 
 	public function login_user() {
 		$input_data = json_decode(trim(file_get_contents('php://input')), true);
-		if($this->user_model->user_authentication($input_data['login'],$input_data['pass'])){
+		$id = $this->user_model->user_authentication($input_data['login'],$input_data['pass']);
+		if ($id) {
 			$login_type = $this->user_model->login_type($input_data['login']);
-			echo $login_type;
+			$data = array('login_type' => $login_type, 'id' =>  $id); 
+			echo json_encode($data);
 		} else {
 			return false;
 		}
@@ -140,6 +142,27 @@ class User extends CI_Controller {
 	public function search_books() {
 		$input_data = json_decode(trim(file_get_contents('php://input')), true);
 		echo json_encode($this->user_model->search_books($input_data['title'],$input_data['author'],$input_data['year'],$input_data['genre']));
+	}
+
+	public function get_all_reservations() {
+		echo json_encode($this->user_model->get_all_reservations());
+	}
+
+	public function add_reservation() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		$this->user_model->add_reservation($input_data['reader_id'],
+									       $input_data['book_id'],
+								   	       $input_data['approved']);
+	}
+
+	public function delete_reservation() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		$this->user_model->delete_reservation($input_data['id']);
+	}
+
+	public function approve_reservation() {
+		$input_data = json_decode(trim(file_get_contents('php://input')), true);
+		$this->user_model->approve_reservation($input_data['id']);
 	}
 
 }

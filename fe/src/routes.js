@@ -5,6 +5,7 @@ import Book from './Book.js';
 import Reader from './Reader.js';
 import Admin from './Admin.js';
 import Auth from './Auth.js';
+import Reservation from './Reservation.js';
 import { BrowserRouter as Router, Route, Link, Redirect, Switch } from "react-router-dom";
 import React,{Component} from 'react';
 
@@ -75,6 +76,9 @@ const employeeNav = function(children) {
 		        <li>
 		          <Link to="/books">Books</Link>
 		        </li>
+		        <li>
+		          <Link to="/reservations">Reservations</Link>
+		        </li>
 		    </ul>
 		    <hr/>
 		    {children}
@@ -117,6 +121,7 @@ export default (
 	      <Route path="/employee" render={()=>{ return navSwitch(<Auth><Reader/></Auth>) }} />
 	      <Route path="/admin" render={()=>{ return navSwitch(<Auth><Admin/></Auth>) }} />
 	      <Route path="/reader" render={()=>{ return navSwitch(<Auth><Reader/></Auth>) }} />
+	      <Route path="/reservations" render={()=>{ return navSwitch(<Auth><Reservation/></Auth>) }} />
 	   </Switch>
 	</Router>
 );

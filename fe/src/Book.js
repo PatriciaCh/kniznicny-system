@@ -40,10 +40,10 @@ constructor(props) {
 					} 
 					return (<span className="delete" onClick={()=>{this.deleteBook(bk)}}>&times;</span>);
 				}
-				let checkbox = sessionStorage.getItem('type') == "3" ? (<td><input type="submit" value="Reserve"/></td>) : (null);
+				let button = sessionStorage.getItem('type') == "3" ? (<td><button value="Reserve"></button></td>) : (null);
 				let mapa = data.data.map((bk)=>
 						(	<tr>
-								{checkbox}
+								{button}
 								<td>{bk.title}</td>
 								<td>{bk.author}</td>
 								<td>{bk.year}</td>

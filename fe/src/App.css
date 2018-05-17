@@ -26,8 +26,19 @@ ul, li {
 	font-weight: bold;
 }
 
-input[type="submit"], input[type="button"] {
+button, input[type="submit"], input[type="button"] {
     background-color: #3CB371;
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.disabled {
+    background-color: #708090;
     border: none;
     color: white;
     padding: 12px 28px;

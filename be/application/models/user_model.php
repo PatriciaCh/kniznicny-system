@@ -76,10 +76,12 @@ class User_model extends CI_Model {
 		if(count($s)==0) {
 			$r = $this->db->get_where('employees', array('login' => $login, 'password' => $password))->result_array();
 			if(count($r)==0) {
-				return False;
+				return 0;
 			}
+			return $r[0]['id'];
 		}
-		return True;
+		return $s[0]['id'];
+		
 	}
 
 	function get_all_employees(){
@@ -131,8 +133,37 @@ class User_model extends CI_Model {
 		$this->db->like('author', $author);
 		$this->db->like('year', $year);
 		$this->db->like('genre', $genre);
+		$this->db->where(array('count >'=> 0));
 		return $this->db->get('books')->result_array();
 	}
 
+	function get_all_reservations(){
+		$this->db->select('readers.id, readers.firstname, readers.lastname, books.id, books.title, books.author, r.date_of_booking, r.approved, r.id');
+		$this->db->from('reservations as r');
+		$this->db->join('readers', 'readers.id = r.reader_id');
+		$this->db->join('books', 'books.id = r.book_id');
+		return $this->db->get()->result_array();
+	}
 
+	function add_reservation($reader_id, $book_id, $approved) {
+			$data = array('reader_id' => $reader_id, 
+						  'book_id' => $book_id, 
+						  'approved' => $approved);
+			$this->db->insert('reservations', $data);
+
+			$this->db->set('count', 'count-1', false);
+			$this->db->where(array('id' => $book_id));
+			$this->db->update('books');
+	}
+
+	function delete_reservation($id) {
+		$data = array('id' => $id);
+		$this->db->delete('reservations', $data);
+	}
+
+	function approve_reservation($id) {
+		$this->db->set('approved', true, false);
+		$this->db->where(array('id' => $id));
+		$this->db->update('reservations');
+	}
 }

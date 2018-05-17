@@ -29,11 +29,13 @@ class Login extends Component {
 			}
 		}).then((data) => {
 			if (data.data) {
-				sessionStorage.setItem("type", data.data); // admin / reader / employee
-
+				sessionStorage.setItem("type", data.data.login_type); // admin / reader / employee
 				sessionStorage.setItem('logged', true);
 				sessionStorage.setItem("login", this.state.valueLogin);
-				switch (data.data) {
+				sessionStorage.setItem("user_id", data.data.id);
+				console.log(data.data);
+				console.log(data.data.id, data.data.login_type);
+				switch (data.data.id) {
 					case 1: 
 						this.state.redirectPlace = '/admin';
 						break;
@@ -59,6 +61,7 @@ class Login extends Component {
 		sessionStorage.removeItem('logged');
 		sessionStorage.removeItem('login');
 		sessionStorage.removeItem('type');
+		sessionStorage.removeItem("user_id");
 		this.setState({redirect: true});
 	}
 
@@ -68,7 +71,6 @@ class Login extends Component {
 	}
 
 	render() {
-		console.log(this.state.redirectPlace);
 		if (this.state.redirect) {
 			return <Redirect to={this.state.redirectPlace}/>
 		}
