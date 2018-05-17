@@ -133,14 +133,13 @@ class User_model extends CI_Model {
 		$this->db->like('author', $author);
 		$this->db->like('year', $year);
 		$this->db->like('genre', $genre);
-		$this->db->where(array('count >'=> 0));
 		return $this->db->get('books')->result_array();
 	}
 
 	function get_all_reservations(){
-		$this->db->select('readers.id, readers.firstname, readers.lastname, books.id, books.title, books.author, r.date_of_booking, r.approved, r.id');
+		$this->db->select('readers.id as reader, readers.firstname, readers.lastname, books.id as book, books.title, books.author, r.date_of_booking, r.approved, r.id as reservation');
 		$this->db->from('reservations as r');
-		$this->db->join('readers', 'readers.id = r.reader_id');
+		$this->db->join('readers', 'readers.id  = r.reader_id');
 		$this->db->join('books', 'books.id = r.book_id');
 		return $this->db->get()->result_array();
 	}
@@ -156,7 +155,11 @@ class User_model extends CI_Model {
 			$this->db->update('books');
 	}
 
-	function delete_reservation($id) {
+	function delete_reservation($id, $book_id) {
+		$this->db->set('count', 'count+1', false);
+		$this->db->where(array('id' => $book_id));
+		$this->db->update('books');
+
 		$data = array('id' => $id);
 		$this->db->delete('reservations', $data);
 	}

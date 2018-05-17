@@ -76,7 +76,10 @@ class AddBook extends Component {
 					this.state.valueTitle = "";
 					this.state.valueAuthor = "";
 					this.state.valueYear = "";
-					this.setState({valueGenre: ""})
+					this.setState({valueGenre: ""});
+					this.setState({
+					warningMessage: ""
+					})		
 				});
 		}
 	}

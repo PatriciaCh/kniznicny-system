@@ -17,7 +17,8 @@ class Reservation extends Component {
 		axios({
 				method: 'POST',
 				url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/delete_reservation',
-				data: {id: rs.id
+				data: {id: rs.reservation,
+					   book_id: rs.book
 				}
 			}).then((data) => {
 				this.viewReservations();
@@ -28,7 +29,7 @@ class Reservation extends Component {
 		axios({
 				method: 'POST',
 				url: 'http:/' + '/127.0.0.1/kniznicny-system/be/User/approve_reservation',
-				data: {id: rs.id
+				data: {id: rs.reservation
 				}
 			}).then((data) => {
 				this.viewReservations();

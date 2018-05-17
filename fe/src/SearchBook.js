@@ -66,10 +66,10 @@ class SearchBook extends Component {
 				genre: this.state.valueGenre
 			}
 		}).then((data) => {
-				
-				let mapa = data.data.map((bk)=>
-						(	<tr>
-								<td><Button addReservation={this.addReservation} bk={bk}/></td>
+				let mapa = data.data.map((bk)=>{
+					let viewButton = bk.count == 0 ? (null) : (<Button addReservation={this.addReservation} bk={bk}/>);
+					return	(	<tr>
+								<td>{viewButton}</td>
 								<td>{bk.title}</td>
 								<td>{bk.author}</td>
 								<td>{bk.year}</td>
@@ -77,6 +77,7 @@ class SearchBook extends Component {
 								<td>{bk.count}</td>
 							</tr>
 						)
+					}
 				);
 				this.setState({books: mapa});
 			}); 

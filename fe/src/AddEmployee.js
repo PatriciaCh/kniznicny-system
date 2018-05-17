@@ -83,7 +83,9 @@ class AddEmployee extends Component {
 						this.setState({valuePass: ""})
 						
 				}
-				console.log(data.data);
+				this.setState({
+					warningMessage: ""
+				})
 			})
 		}
 	}

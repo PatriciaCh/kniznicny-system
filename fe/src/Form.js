@@ -43,6 +43,12 @@ class Form extends Component {
 			})
 			return false;
 		}
+		if (this.state.valueContact.length != 10) {
+			this.setState({
+				warningMessage: "Contact number must be 10 digits long!"
+			})
+			return false;
+		}
 		if (!regexNumeric.test(this.state.valueContact)) {
 			this.setState({
 				warningMessage: "Contact number must contains only digits!"
@@ -117,7 +123,8 @@ class Form extends Component {
 						this.state.valueContact = "";
 						this.state.valueLogin = "";
 						this.state.valuePass = "";
-						this.setState({valueConfPass: ""})
+						this.setState({valueConfPass: ""});
+						this.setState({warningMessage: ""})
 						
 				}
 			})

@@ -157,7 +157,7 @@ class User extends CI_Controller {
 
 	public function delete_reservation() {
 		$input_data = json_decode(trim(file_get_contents('php://input')), true);
-		$this->user_model->delete_reservation($input_data['id']);
+		$this->user_model->delete_reservation($input_data['id'], $input_data['book_id']);
 	}
 
 	public function approve_reservation() {
